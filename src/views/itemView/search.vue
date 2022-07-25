@@ -25,16 +25,10 @@
 			</div>
 		</template>
 		<div class="resultContainer">
-			<div class="tarBar" v-if="$route.path !== '/home/search/default'">
-				<div
-					class="btn"
-					v-for="(val, index) in arr"
-					:class="isActive(val.path)"
-				>
-					{{ val.name }}
-					<div class="bar"></div>
-				</div>
-			</div>
+			<tar-bar
+				:arr="arr"
+				v-if="$route.path !== '/home/search/default'"
+			></tar-bar>
 			<div class="container">
 				<router-view v-if="isRefresh"></router-view>
 			</div>
@@ -49,16 +43,7 @@ import * as _ from "lodash";
 import { nextTick, reactive, ref, watch, provide } from "vue";
 import { useRouter } from "vue-router";
 import { getHotWord } from "@/http/searchInfo";
-const inputVal = ref("");
-const suggest = reactive([] as suggestType[]);
-const onFocus = ref(false);
-const pathName = ref("single");
-const $router = useRouter();
-const isRefresh = ref(true);
-const hotWords = ref();
-const searchHistory = reactive(
-	new Set(JSON.parse(localStorage.getItem("searchHistory") || "[]"))
-);
+import tarBar from "@/components/tarBar.vue";
 const arr = [
 	{
 		name: "单曲",
@@ -77,6 +62,17 @@ const arr = [
 		path: "MV",
 	},
 ];
+const inputVal = ref("");
+const suggest = reactive([] as suggestType[]);
+const onFocus = ref(false);
+const pathName = ref(arr[0].path);
+const $router = useRouter();
+const isRefresh = ref(true);
+0;
+const hotWords = ref();
+const searchHistory = reactive(
+	new Set(JSON.parse(localStorage.getItem("searchHistory") || "[]"))
+);
 watch(
 	inputVal,
 	_.debounce(async () => {
