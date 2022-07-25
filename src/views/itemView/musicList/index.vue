@@ -86,7 +86,6 @@ const getData = async () => {
 		});
 	}
 };
-0;
 getData();
 </script>
 
