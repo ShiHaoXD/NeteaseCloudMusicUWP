@@ -1,24 +1,65 @@
 <template>
-	<div class="swiper">
-		<div class="swiperContainer" @mouseenter="stopPlay" @mouseout="autoPlay">
-			<div
-				class="imgContainer"
-				:class="getImgClass(index)"
-				v-for="(val, index) in imgSrc"
-				:key="'pic' + index"
+	<div
+		class="swiperVue"
+		@mouseenter="stopPlay" @mouseout="autoPlay"
+	>
+		<div class="btn preBtn" @click="nowIndex--">
+			<svg
+				t="1658567810017"
+				class="icon"
+				viewBox="0 0 1024 1024"
+				version="1.1"
+				xmlns="http://www.w3.org/2000/svg"
+				p-id="2452"
+				width="200"
+				height="200"
 			>
-				<img :src="val" />
+				<path
+					d="M729.6 931.2l-416-425.6 416-416c9.6-9.6 9.6-25.6 0-35.2-9.6-9.6-25.6-9.6-35.2 0l-432 435.2c-9.6 9.6-9.6 25.6 0 35.2l432 441.6c9.6 9.6 25.6 9.6 35.2 0C739.2 956.8 739.2 940.8 729.6 931.2z"
+					p-id="2453"
+					fill="#ffffff"
+				></path>
+			</svg>
+		</div>
+		<div class="btn nextBtn" @click="nowIndex++">
+			<svg
+				t="1658567768267"
+				class="icon"
+				viewBox="0 0 1024 1024"
+				version="1.1"
+				xmlns="http://www.w3.org/2000/svg"
+				p-id="2297"
+				width="200"
+				height="200"
+			>
+				<path
+					d="M761.6 489.6l-432-435.2c-9.6-9.6-25.6-9.6-35.2 0-9.6 9.6-9.6 25.6 0 35.2l416 416-416 425.6c-9.6 9.6-9.6 25.6 0 35.2s25.6 9.6 35.2 0l432-441.6C771.2 515.2 771.2 499.2 761.6 489.6z"
+					p-id="2298"
+					fill="#ffffff"
+				></path>
+			</svg>
+		</div>
+		<div class="swiper">
+			<div class="swiperContainer">
+				<div
+					class="imgContainer"
+					:class="getImgClass(index)"
+					v-for="(val, index) in imgSrc"
+					:key="'pic' + index"
+				>
+					<img :src="val" />
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="controller" @mouseenter="stopPlay" @mouseout="autoPlay">
-		<div
-			class="controllerBtn"
-			:class="isActive(index)"
-			v-for="(val, index) in imgSrc"
-			:key="'btn' + index"
-			@click="btnChange(index)"
-		></div>
+		<div class="controller">
+			<div
+				class="controllerBtn"
+				:class="isActive(index)"
+				v-for="(val, index) in imgSrc"
+				:key="'btn' + index"
+				@click="btnChange(index)"
+			></div>
+		</div>
 	</div>
 </template>
 
@@ -96,6 +137,8 @@ export default defineComponent({
 		watch(nowIndex, () => {
 			nowIndex.value =
 				nowIndex.value > imgSrc.value.length - 1 ? 0 : nowIndex.value;
+			nowIndex.value =
+				nowIndex.value < 0 ? imgSrc.value.length - 1 : nowIndex.value;
 		});
 		watch(timer, (val, oldVal) => {
 			clearInterval(oldVal);
@@ -118,6 +161,36 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.btn {
+	transform-origin: 100% 100%;
+	position: absolute;
+	height: 200px;
+	width: 40px;
+	z-index: 10;
+	color: white;
+	display: none;
+	justify-content: center;
+	align-items: center;
+}
+.btn:hover {
+	background-color: black;
+	opacity: 0.5;
+}
+.btn:active {
+	background-color: black;
+	opacity: 0.8;
+}
+.preBtn {
+	transform: scale(0.85);
+	left: 15px;
+}
+.nextBtn {
+	transform: scale(0.85);
+	right: 20px;
+}
+.swiperVue:hover .btn {
+	display: flex;
+}
 .swiper {
 	display: flex;
 	justify-content: center;
@@ -174,7 +247,7 @@ export default defineComponent({
 .controller {
 	display: flex;
 	justify-content: center;
-	width: 800px;
+	width: 100%;
 	margin-top: 20px;
 	.controllerBtn {
 		width: 10px;
