@@ -5,7 +5,7 @@
 			<TarBar></TarBar>
 		</div>
 		<div style="margin: 10px 0">
-			<SwiperVue></SwiperVue>
+			<SwiperVue :img-src="banner"></SwiperVue>
 		</div>
 		<div class="threeNav">
 			<div class="privateFM nav">
@@ -98,26 +98,59 @@
 				</div>
 			</div>
 		</div>
-		<div class="functionBar">
-			<div class="functionBarSvg">
-				<svg
-					t="1658760588554"
-					class="icon"
-					viewBox="0 0 1024 1024"
-					version="1.1"
-					xmlns="http://www.w3.org/2000/svg"
-					p-id="13602"
-					width="200"
-					height="200"
-				>
-					<path
-						d="M725.333333 170.666667h74.709334C864.853333 170.666667 917.333333 223.189333 917.333333 288.096V799.893333C917.333333 864.757333 864.832 917.333333 800.042667 917.333333H223.957333C159.146667 917.333333 106.666667 864.810667 106.666667 799.904V288.106667C106.666667 223.242667 159.168 170.666667 223.957333 170.666667H298.666667v-32a32 32 0 0 1 64 0v32h298.666666v-32a32 32 0 0 1 64 0v32z m0 64v32a32 32 0 0 1-64 0v-32H362.666667v32a32 32 0 0 1-64 0v-32h-74.709334A53.354667 53.354667 0 0 0 170.666667 288.096V799.893333A53.301333 53.301333 0 0 0 223.957333 853.333333h576.085334A53.354667 53.354667 0 0 0 853.333333 799.904V288.106667A53.301333 53.301333 0 0 0 800.042667 234.666667H725.333333z m-10.666666 224a32 32 0 0 1 0 64H309.333333a32 32 0 0 1 0-64h405.333334zM586.666667 618.666667a32 32 0 0 1 0 64H309.333333a32 32 0 0 1 0-64h277.333334z"
-						p-id="13603"
-						fill="#d81e06"
-					></path>
-				</svg>
+		<div>
+			<div class="functionBar">
+				<div class="functionBarSvg">
+					<svg
+						t="1658760588554"
+						class="icon"
+						viewBox="0 0 1024 1024"
+						version="1.1"
+						xmlns="http://www.w3.org/2000/svg"
+						p-id="13602"
+						width="200"
+						height="200"
+					>
+						<path
+							d="M725.333333 170.666667h74.709334C864.853333 170.666667 917.333333 223.189333 917.333333 288.096V799.893333C917.333333 864.757333 864.832 917.333333 800.042667 917.333333H223.957333C159.146667 917.333333 106.666667 864.810667 106.666667 799.904V288.106667C106.666667 223.242667 159.168 170.666667 223.957333 170.666667H298.666667v-32a32 32 0 0 1 64 0v32h298.666666v-32a32 32 0 0 1 64 0v32z m0 64v32a32 32 0 0 1-64 0v-32H362.666667v32a32 32 0 0 1-64 0v-32h-74.709334A53.354667 53.354667 0 0 0 170.666667 288.096V799.893333A53.301333 53.301333 0 0 0 223.957333 853.333333h576.085334A53.354667 53.354667 0 0 0 853.333333 799.904V288.106667A53.301333 53.301333 0 0 0 800.042667 234.666667H725.333333z m-10.666666 224a32 32 0 0 1 0 64H309.333333a32 32 0 0 1 0-64h405.333334zM586.666667 618.666667a32 32 0 0 1 0 64H309.333333a32 32 0 0 1 0-64h277.333334z"
+							p-id="13603"
+							fill="#d81e06"
+						></path>
+					</svg>
+				</div>
+				<div class="functionName">推荐歌单</div>
 			</div>
-			<div class="functionName">推荐歌单</div>
+			<div class="recommendList">
+				<div
+					class="recommend"
+					v-for="(val, index) in recommend"
+					@click="changeRouter(val.id)"
+				>
+					<div class="imgBox">
+						<div class="playCount">
+							<svg
+								t="1658851037803"
+								class="icon"
+								viewBox="0 0 1024 1024"
+								version="1.1"
+								xmlns="http://www.w3.org/2000/svg"
+								p-id="2465"
+								width="200"
+								height="200"
+							>
+								<path
+									d="M896 554.666667h-85.333333V426.666667a298.666667 298.666667 0 1 0-597.333334 0v128H128A85.426667 85.426667 0 0 0 42.666667 640v170.666667a85.426667 85.426667 0 0 0 85.333333 85.333333h106.666667a21.333333 21.333333 0 0 0 21.333333-21.333333V426.666667c0-141.16 114.84-256 256-256s256 114.84 256 256v448a21.333333 21.333333 0 0 0 21.333333 21.333333h106.666667a85.426667 85.426667 0 0 0 85.333333-85.333333V640a85.426667 85.426667 0 0 0-85.333333-85.333333z"
+									fill="#ffffff"
+									p-id="2466"
+								></path>
+							</svg>
+							<span>{{ Math.floor(val.playCount / 10000) }}万</span>
+						</div>
+						<img :src="val.url" />
+					</div>
+					<div class="describe">{{ val.detail }}</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -125,15 +158,91 @@
 <script setup lang="ts">
 import SwiperVue from "@/components/Swiper.vue";
 import TarBar from "@/components/tarBar.vue";
+import { getBanner, getRecommend } from "@/http/findMusicApi";
+import { inject, reactive } from "vue";
+import { useRouter } from "vue-router";
+const banner = reactive([] as Array<String>);
+const recommend = reactive(
+	[] as Array<{ url: string; detail: string; id: number; playCount: number }>
+);
+const $router = useRouter();
+const reload = inject("reload") as Function;
+function changeRouter(id: number) {
+	$router.push("/home/songSheet/" + id).then(() => {
+		reload();
+	});
+}
+async function getData() {
+	const bannerRes = await getBanner();
+	const recommendRes = await getRecommend();
+	for (const val of bannerRes.data.banners) banner.push(val.pic);
+	for (const val of recommendRes.data.recommend)
+		recommend.push({
+			url: val.picUrl,
+			detail: val.name,
+			id: val.id,
+			playCount: val.playcount,
+		});
+}
+getData();
 </script>
 
 <style scoped lang="scss">
+.recommendList {
+	display: flex;
+	flex-wrap: wrap;
+	height: 100%;
+	.imgBox {
+		position: relative;
+		width: 150px;
+		height: 150px;
+	}
+	.recommend {
+		flex: 0 0 25%;
+		display: flex;
+		flex-direction: column;
+		height: 200px;
+		width: 150px;
+		position: relative;
+		.playCount {
+			position: absolute;
+			top: 0;
+			right: 0;
+			height: 20px;
+			width: 70px;
+			font-size: 12px;
+			background: linear-gradient(to right, transparent, black);
+			opacity: 0.8;
+			display: flex;
+			color: white;
+			align-items: center;
+			justify-content: flex-end;
+			svg {
+				height: 15px;
+				width: 15px;
+			}
+		}
+		img {
+			width: 150px;
+			height: 150px;
+		}
+	}
+	.describe {
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		overflow: hidden;
+		font-size: 16px;
+		margin: 5px 0;
+		width: 150px;
+	}
+}
 .functionBar {
 	height: 30px;
 	display: flex;
 	justify-content: flex-start;
 	align-items: flex-start;
 	border-bottom: 1px solid rgb(228, 228, 231);
+	margin-bottom: 10px;
 	.functionName {
 		height: 100%;
 		font-size: 16px;
@@ -154,6 +263,8 @@ import TarBar from "@/components/tarBar.vue";
 	display: flex;
 	flex-direction: column;
 	position: relative;
+	overflow: auto;
+	height: 818px;
 }
 .containerName {
 	margin-top: 10px;
@@ -165,6 +276,16 @@ import TarBar from "@/components/tarBar.vue";
 	justify-content: space-around;
 	height: 70px;
 	margin-bottom: 30px;
+	.describe {
+		display: flex;
+		flex-direction: column;
+		margin-left: 10px;
+
+		.detail {
+			font-size: 12px;
+			color: darkgray;
+		}
+	}
 }
 .imgContainer {
 	width: 60px;
@@ -183,16 +304,7 @@ import TarBar from "@/components/tarBar.vue";
 		height: 70%;
 	}
 }
-.describe {
-	display: flex;
-	flex-direction: column;
-	margin-left: 10px;
 
-	.detail {
-		font-size: 12px;
-		color: darkgray;
-	}
-}
 .nav {
 	display: flex;
 	align-items: center;
@@ -203,5 +315,20 @@ import TarBar from "@/components/tarBar.vue";
 	background-color: rgb(228, 228, 231);
 	height: 100%;
 	transform: scale(0.85);
+}
+::-webkit-scrollbar {
+	/*滚动条整体样式*/
+	width: 10px; /*高宽分别对应横竖滚动条的尺寸*/
+	height: 1px;
+}
+::-webkit-scrollbar-thumb {
+	/*滚动条里面小方块*/
+	border-radius: 10px;
+	background: #c8c9cc;
+}
+::-webkit-scrollbar-track {
+	/*滚动条里面轨道*/
+	border-radius: 10px;
+	background: white;
 }
 </style>
